@@ -1,0 +1,14 @@
+N = 30000000, T = 100
+
+my_strlen1
+  takes  : 3422.9120ms
+  average: 34.2291ms
+-------------------
+my_strlen2
+  takes  : 1369.6280ms
+  average: 13.6963ms
+-------------------
+len
+  takes  : 134.4190ms
+  average: 1.3442ms
+-------------------
