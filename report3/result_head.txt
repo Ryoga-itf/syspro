@@ -1,0 +1,6 @@
+$ ./a.out sample.txt 5
+01. Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet.
+02. Nisi anim cupidatat excepteur officia.
+03. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident.
+04. Nostrud officia pariatur ut officia.
+05. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate.
