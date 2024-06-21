@@ -1,0 +1,80 @@
+学籍番号: __STUDENT_ID__
+名前: __STUDENT_NAME__
+課題番号：4
+練習問題番号：404, 405, 407
+題名：システムプログラム 第4回レポート課題
+
+練習問題(404)
+
+要件に従い、実装を行った。
+コードは以下に示すようになった。
+
+__INCLUDE(./mysystem.c)__
+
+なお、確認のために main 関数内に挙動をテストするためのコードを書いている。
+実行した結果は以下のようになった。
+
+TEST1:
+README.md
+a.out
+head.out
+mysystem.out
+onebyone.out
+redirect.out
+report.sh
+report1
+report2
+report3
+report4
+tail.out
+TEST2:
+     1  README.md
+     2  a.out
+     3  head.out
+     4  mysystem.out
+     5  onebyone.out
+     6  redirect.out
+     7  report.sh
+     8  report1
+     9  report2
+    10  report3
+    11  report4
+    12  tail.out
+TEST3:
+     12      24     199
+TEST4:
+
+/tmp/syspro.txt の中身は以下のようになった。
+
+$ cat /tmp/syspro.txt
+  2286    4572   90765
+
+以上により、実装した mysystem が引数の文字列内のリダイレクションやパイプやワイルドカードを正しく処理できていることが確認できた。
+
+練習問題(405)
+
+要件に従い、実装を行った。
+コードは以下に示すようになった。
+
+__INCLUDE(./redirect.c)__
+
+例えば以下に示す sample.txt に対して、./a.out ./report3/sample.txt /tmp/syspro.txt を実行した。
+
+__INCLUDE(./sample.txt)__
+
+結果は以下のようになった。
+
+$ ./a.out sample.txt /tmp/syspro.txt
+$ cat /tmp/syspro.txt
+  14  224 1476
+
+練習問題(407)
+
+与えられた仕様を満たすように実装を行った。
+コードは以下のようになった。
+
+__INCLUDE(./onebyone.c)__
+
+例えば引数に 60 を与えると以下に示す出力が得られた。
+
+0a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d
