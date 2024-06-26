@@ -36,14 +36,16 @@ void do_child(int write_pipe, int read_pipe, int count) {
         fflush(NULL);
 
         // wait for parent
-        char c = getchar();
+        if (i != count - 1) {
+            char c = getchar();
 
-        close(STDOUT_FILENO);
-        if (dup2(stdout_backup, STDOUT_FILENO) < 0) {
-            perror("dup2 (child)");
-            exit(EXIT_FAILURE);
+            close(STDOUT_FILENO);
+            if (dup2(stdout_backup, STDOUT_FILENO) < 0) {
+                perror("dup2 (child)");
+                exit(EXIT_FAILURE);
+            }
+            close(stdout_backup);
         }
-        close(stdout_backup);
     }
 }
 
