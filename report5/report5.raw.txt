@@ -1,0 +1,103 @@
+学籍番号: __STUDENT_ID__
+名前: __STUDENT_NAME__
+課題番号：5
+練習問題番号：503, 504
+題名：システムプログラム 第5回レポート課題
+
+練習問題(503)
+
+要件に従い、実装を行った。
+コードを以下に示す。
+
+__INCLUDE(./signalhandlers.c)__
+
+実装において、シグナルハンドラ内で printf を使わないように工夫を行った。
+また、実行した結果を以下に示す。
+
+$ ./a.out 0
+Caught signal SIGSEGV: Invalid memory access.
+Attempted to access memory address: (nil)
+
+$ ./a.out 1
+Caught signal SIGFPE: Division by zero.
+
+$ ./a.out 2
+<ここでターミナルのウィンドウサイズを変更する>
+Caught signal SIGWINCH: Window size changed.
+
+また、不正なメモリアクセスを意図的に行う箇所の int *ptr = NULL; の下に ptr += 1000000007; という行を追加して挙動を確認した。
+結果を以下に示す。
+
+$ ./a.out 0                            
+Caught signal SIGSEGV: Invalid memory access.
+Attempted to access memory address: 0xee6b281c
+
+アクセス先メモリアドレスが変わっていることが確認できる。
+
+練習問題(505)
+
+要件に従い、実装を行った。
+コードを以下に示す。
+
+__INCLUDE(./mygetchar.c)__
+
+main 関数内に、検証のためにタイムアウト時間を 5 秒に設定し、mygetchar を呼び出し、その戻り値を表示するプログラムを書いている。
+
+仕様を満たしていることを示すための実行例を以下に示す。
+
+$ ./a.out # mygetchar の戻り値 = キー入力値
+Current time: Mon Jul  1 14:18:08 2024
+within 5 seconds: a
+
+mygetchar returned: 97
+
+input: 'a' (97)
+==========
+Current time: Mon Jul  1 14:18:10 2024
+
+
+$ ./a.out # mygetchar の戻り値 = -1
+Current time: Mon Jul  1 14:18:37 2024
+within 5 seconds: 
+mygetchar returned: -1
+==========
+Current time: Mon Jul  1 14:18:39 2024
+
+なお、EOF を入力するために Ctrl-D を入力した。
+
+$ ./a.out # mygetchar の戻り値 = -2
+Current time: Mon Jul  1 14:19:10 2024
+within 5 seconds: 
+mygetchar returned: -2
+==========
+Current time: Mon Jul  1 14:19:15 2024
+
+タイムアウトのために 5 秒待機した。
+
+$ ./a.out # mygetchar の戻り値 = -3
+Current time: Mon Jul  1 14:19:35 2024
+within 5 seconds: ^C
+mygetchar returned: -3
+==========
+Current time: Mon Jul  1 14:19:37 2024
+
+Ctrl-C によって SIGINT を送信した。
+
+さらに、mygetchar の呼び出し後に SIGINT を送信して、
+mygetchar の呼び出し中以外ではデフォルトのシグナルハンドラが呼び出されることを確認するために以下の実験を行った。
+最後の return 0; の直前に、sleep(5) を挿入し、実行をした。結果を以下に示す。
+
+
+$ ./a.out
+Current time: Mon Jul  1 14:24:06 2024
+within 5 seconds: ^C
+mygetchar returned: -3
+==========
+Current time: Mon Jul  1 14:24:06 2024
+^C
+
+$ echo $?        
+130
+
+SIGINT を送信することにより、デフォルトのシグナルハンドラが呼ばれたことがわかる。
+また、$? を確認すると 0 以外となっていた。
