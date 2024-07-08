@@ -1,0 +1,59 @@
+学籍番号: __STUDENT_ID__
+名前: __STUDENT_NAME__
+課題番号：6
+練習問題番号：609
+題名：システムプログラム 第6回レポート課題
+
+要件に従い実装を行った。コードを以下に示す。
+
+__INCLUDE(./wsave.c)__
+
+要件に従っていることを確認するためいくつか実験を行った。
+
+まず、テキストファイルが正しく取得できることを確認した。
+作成したプログラムで実際に何か HTML ファイルを取得してみる。
+その後、curl コマンドでも同様に同じ URL に対してファイルを取得した。
+次に両者を cmp 及び sha1sum コマンドで比較した。
+以下に詳細を示す。
+
+$ ./wsave www.coins.tsukuba.ac.jp 80 /~syspro/ /tmp/syspro_wsave.html
+1739
+
+$ curl https://www.coins.tsukuba.ac.jp/~syspro/ > /tmp/syspro_curl.html  
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1739  100  1739    0     0   7254      0 --:--:-- --:--:-- --:--:--  7276
+
+$ cmp /tmp/syspro_wsave.html /tmp/syspro_curl.html
+
+$ sha1sum /tmp/syspro_*.html
+463f2aac89c8e9bc9099572ab3e33a0dbb1b3a33  /tmp/syspro_curl.html
+463f2aac89c8e9bc9099572ab3e33a0dbb1b3a33  /tmp/syspro_wsave.html
+
+sha1 によるハッシュ値は一致し、正しく実装できていることが確認できる。
+
+次に、バイナリファイルとして画像ファイルが正しく取得できることを確認した。
+実験の様子を以下に示す。
+
+$ ./wsave www.coins.tsukuba.ac.jp 80 /~syspro/2024/2024-07-03/images/tcp-stream-bi.png /tmp/tcp-stream-bi_wsave.png   
+5343
+
+$ curl https://www.coins.tsukuba.ac.jp/~syspro/2024/2024-07-03/images/tcp-stream-bi.png > /tmp/tcp-stream-bi_curl.png                            
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  5343  100  5343    0     0  14901      0 --:--:-- --:--:-- --:--:-- 14883
+
+$ cmp /tmp/tcp-stream-bi_wsave.png /tmp/tcp-stream-bi_curl.png                                                       
+
+$ sha1sum /tmp/tcp-stream-bi_*.png     
+2161b3b3c7e235faa69fdde2de9e6b4042cd4925  /tmp/tcp-stream-bi_curl.png
+2161b3b3c7e235faa69fdde2de9e6b4042cd4925  /tmp/tcp-stream-bi_wsave.png
+
+$ file /tmp/tcp-stream-bi_*.png
+/tmp/tcp-stream-bi_curl.png:  PNG image data, 398 x 137, 8-bit/color RGB, non-interlaced
+/tmp/tcp-stream-bi_wsave.png: PNG image data, 398 x 137, 8-bit/color RGB, non-interlaced
+
+テキストファイルのときと同様に検証を行った。
+curl コマンドを用いたときと同一の画像ファイルが取得できていることが確認できた。
+さらに、file コマンドを用いて検証を行うと、
+正しい形式の画像ファイル（ここでは PNG 形式）が取得できていることが確認できた。
