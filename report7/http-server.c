@@ -146,7 +146,7 @@ void http_send_reply(FILE *out, char *filename) {
         }
 
         fprintf(out, "HTTP/1.0 200 OK\r\n");
-        fprintf(out, "Content-Type: text/html\r\n");
+        fprintf(out, "Content-Type: %s\r\n", content_type);
         fprintf(out, "\r\n");
 
         while (!feof(file)) {

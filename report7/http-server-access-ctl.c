@@ -99,49 +99,43 @@ int http_ip_address_waf(int com) {
     if (addr.ss_family == PF_INET) {
         // IPv4
         struct sockaddr_in *addr4 = (struct sockaddr_in *)&addr;
-        unsigned char *ip_addr = (unsigned char *)&addr4->sin_addr.s_addr;
+        uint32_t ip_addr = addr4->sin_addr.s_addr;
         // 130.158.230.0 ~ 130.158.231.255
         // 130.158.222.0 ~ 130.158.223.255
-        if (ip_addr[0] == 130 && ip_addr[1] == 158) {
-            if (ip_addr[2] == 230 || ip_addr[2] == 231) {
-                return 1;
-            }
-            if (ip_addr[2] == 222 || ip_addr[2] == 223) {
-                return 1;
-            }
+        uint32_t masked = ip_addr & 0xfffffe00;
+        if (masked == 0x829ee600) {
+            // 130.158.230.0
+            return 1;
+        } else if (masked == 0x829ede00) {
+            // 130.158.222.0
+            return 1;
         }
     } else if (addr.ss_family == PF_INET6) {
         // IPv6
         struct sockaddr_in6 *addr6 = (struct sockaddr_in6 *)&addr;
-        unsigned char *ip_addr = (unsigned char *)&addr6->sin6_addr.s6_addr;
+        uint32_t *ip_addr = (uint32_t *)&addr6->sin6_addr.s6_addr;
+        unsigned char *ip_addr_bytes =
+            (unsigned char *)&addr6->sin6_addr.s6_addr;
 
         if (IN6_IS_ADDR_V4MAPPED(&addr6->sin6_addr)) {
             // IPv4-mapped IPv6 address
-            unsigned char *ip_addr_v4 = ip_addr + 12;
+            uint32_t ip_addr_v4 = ip_addr[3];
+
             // 130.158.230.0 ~ 130.158.231.255
             // 130.158.222.0 ~ 130.158.223.255
-            if (ip_addr_v4[0] == 130 && ip_addr_v4[1] == 158) {
-                if (ip_addr_v4[2] == 230 || ip_addr_v4[2] == 231) {
-                    return 1;
-                }
-                if (ip_addr_v4[2] == 222 || ip_addr_v4[2] == 223) {
-                    return 1;
-                }
+            uint32_t masked = ip_addr_v4 & 0xfffffe00;
+            if (masked == 0x829ee600) {
+                // 130.158.230.0
+                return 1;
+            } else if (masked == 0x829ede00) {
+                // 130.158.222.0
+                return 1;
             }
         } else {
+            uint32_t masked0 = ip_addr[0] & 0xffffffff;
+            uint32_t masked1 = ip_addr[1] & 0xffffff00;
             // 2001:2f8:3a:1700::/56
-            if (ip_addr[0] == 0x20 && ip_addr[1] == 0x01 &&
-                ip_addr[2] == 0x02 && ip_addr[3] == 0xf8 &&
-                ip_addr[4] == 0x03 && ip_addr[5] == 0x0a &&
-                (ip_addr[6] & 0xf0) == 0x10) {
-                // 2001:2f8:3a:1711::/64
-                if (ip_addr[6] == 0x11) {
-                    return 1;
-                }
-                // 2001:2f8:3a:1712::/64
-                if (ip_addr[6] == 0x12) {
-                    return 1;
-                }
+            if (masked0 == 0x200102f8 && masked1 == 0x003a1700) {
                 return 1;
             }
         }
@@ -216,7 +210,7 @@ void http_send_reply(FILE *out, char *filename) {
         }
 
         fprintf(out, "HTTP/1.0 200 OK\r\n");
-        fprintf(out, "Content-Type: text/html\r\n");
+        fprintf(out, "Content-Type: %s\r\n", content_type);
         fprintf(out, "\r\n");
 
         while (!feof(file)) {
