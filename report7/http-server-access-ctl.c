@@ -102,11 +102,11 @@ int http_ip_address_waf(int com) {
         uint32_t ip_addr = addr4->sin_addr.s_addr;
         // 130.158.230.0 ~ 130.158.231.255
         // 130.158.222.0 ~ 130.158.223.255
-        uint32_t masked = ip_addr & 0xfffffe00;
-        if (masked == 0x829ee600) {
+        uint32_t masked = ip_addr & 0x007fffff;
+        if (masked == 0x00e69e82) {
             // 130.158.230.0
             return 1;
-        } else if (masked == 0x829ede00) {
+        } else if (masked == 0x00de9e82) {
             // 130.158.222.0
             return 1;
         }
@@ -124,6 +124,7 @@ int http_ip_address_waf(int com) {
             // 130.158.230.0 ~ 130.158.231.255
             // 130.158.222.0 ~ 130.158.223.255
             uint32_t masked = ip_addr_v4 & 0xfffffe00;
+            // f8020120
             if (masked == 0x829ee600) {
                 // 130.158.230.0
                 return 1;
@@ -133,9 +134,9 @@ int http_ip_address_waf(int com) {
             }
         } else {
             uint32_t masked0 = ip_addr[0] & 0xffffffff;
-            uint32_t masked1 = ip_addr[1] & 0xffffff00;
+            uint32_t masked1 = ip_addr[1] & 0x00ffffff;
             // 2001:2f8:3a:1700::/56
-            if (masked0 == 0x200102f8 && masked1 == 0x003a1700) {
+            if (masked0 == 0xf8020120 && masked1 == 0x00173a00) {
                 return 1;
             }
         }
