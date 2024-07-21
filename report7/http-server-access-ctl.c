@@ -102,7 +102,7 @@ int http_ip_address_waf(int com) {
         uint32_t ip_addr = addr4->sin_addr.s_addr;
         // 130.158.230.0 ~ 130.158.231.255
         // 130.158.222.0 ~ 130.158.223.255
-        uint32_t masked = ip_addr & 0x007fffff;
+        uint32_t masked = ip_addr & 0x00feffff;
         if (masked == 0x00e69e82) {
             // 130.158.230.0
             return 1;
