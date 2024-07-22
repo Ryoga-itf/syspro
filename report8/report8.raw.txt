@@ -1,0 +1,77 @@
+学籍番号: __STUDENT_ID__
+名前: __STUDENT_NAME__
+課題番号：8
+練習問題番号：802
+題名：システムプログラム 第8回レポート課題
+
+以下のプログラムを作成した。
+
+__INCLUDE(./http-server-fork.c)__
+
+適切なタイミングで表示されないことがあったため、
+一部に fflush を挟んでいる。
+
+本プログラムは以下の仕様を満たしている。
+- HTTP サーバであり、ファイルとして練習問題 708 の表の通り扱うことができる
+- requestline に「<」や「..」が含まれていたら 400 Bad Request を返す
+- requestline を空白文字で分割したとき、
+  要素数が 3 でないとき 400 Bad Request を返す
+  最初の要素が "GET" でなければ 400 Bad Request を返す
+  最後の要素が "HTTP/1.0" か "HTTP/1.1" でなければ 400 Bad Request を返す
+  2 番目の要素のファイルを表示する
+  この時、このファイルが存在しないときは 404 Not Found を返す
+  また、特定の拡張子でないとき、400 Bad Request を返す
+- 引数 3 つめに、同時に扱えるクライアントの最大数を指定することができる。
+  省略された場合には制限はないものとする。
+
+この挙動を確認するために実験を行った。以下にそれを示す。
+まず、同時最大接続数を 2 に設定した場合のサーバ側のログを示す。
+なお、実験においてはクライアントとして telnet を用いた。
+
+$ ./http-server-fork.out 3000 46 2
+open http://azalea11:3000/index.html
+[19840] accepting (fd==3) to [::]:3000
+[19840] number of child proc: 0
+[19840] accepting incoming connections (acc==3) ...
+[19840] connection (fd==4) from [::ffff:127.0.0.1]:33614
+[19840] number of child proc: 1
+[19840] accepting incoming connections (acc==3) ...
+[19840] connection (fd==4) from [::ffff:127.0.0.1]:33626
+[19840] number of child proc: 2
+[19840] waiting other process.
+requestline is [GET index.html HTTP/1.0]
+filename is [index.html], and extention is [.html].
+[19843] Replied
+[19840] waiting OK
+[19840] number of child proc: 1
+[19840] accepting incoming connections (acc==3) ...
+[19840] connection (fd==4) from [::ffff:127.0.0.1]:45072
+[19840] number of child proc: 2
+[19840] waiting other process.
+requestline is [GET index.html HTTP/1.0]
+filename is [index.html], and extention is [.html].
+[20271] Replied
+[19840] waiting OK
+[19840] number of child proc: 1
+[19840] accepting incoming connections (acc==3) ...
+[19840] connection (fd==4) from [::ffff:127.0.0.1]:45076
+[19840] number of child proc: 2
+[19840] waiting other process.
+requestline is [GET index.html HTTP/1.0]
+filename is [index.html], and extention is [.html].
+[20272] Replied
+[19840] waiting OK
+[19840] number of child proc: 1
+[19840] accepting incoming connections (acc==3) ...
+requestline is [GET index.html HTTP/1.0]
+filename is [index.html], and extention is [.html].
+[19985] Replied
+^C
+
+実験の結果として、3 つ目のクライアントでは他の接続が閉じられるまで
+処理が遅延され、接続数が 2 以下になるまで閉じないと結果が帰ってこなかった。
+ログからも、子プロセスは 2 を超えることがないことがわかる。
+
+また、引数を省略すると上限がなくなり、子プロセスがいくつも作られた。
+
+クライアントとして Firefox を用いると、画像を扱えることも確認できた。
