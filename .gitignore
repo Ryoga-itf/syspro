@@ -6,6 +6,8 @@
 report*.txt
 !report*.raw.txt
 
+*.data
+
 # C/C++
 
 # Prerequisites
@@ -40,3 +42,4 @@ report*.txt
 *.exe
 *.out
 *.app
+*.cgi
