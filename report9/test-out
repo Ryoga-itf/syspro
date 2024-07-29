@@ -1,0 +1,48 @@
+$ export REQUEST_METHOD=GET
+$ export QUERY_STRING='op=inc&val='
+$ ./cgi-counter.cgi
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY>
+1
+</BODY></HTML>
+$ ./cgi-counter.cgi
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY>
+2
+</BODY></HTML>
+$ ./cgi-counter.cgi
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY>
+3
+</BODY></HTML>
+$ QUERY_STRING='op=set&val=100'
+$ ./cgi-counter.cgi            
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY>
+100
+</BODY></HTML>
+$ QUERY_STRING='op=set&val=100hello200world'
+$ ./cgi-counter.cgi                         
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY>
+Invalid value
+</BODY></HTML>
+$ QUERY_STRING='op=set&val=12345678901234567890'
+$ ./cgi-counter.cgi                             
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY>
+Too large value
+</BODY></HTML>
+$ QUERY_STRING='op=set&val=-12345678901234567890'
+$ ./cgi-counter.cgi                              
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY>
+Too small value
+</BODY></HTML>
