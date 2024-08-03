@@ -119,11 +119,11 @@ void print_content() {
                 snprintf(month_buffer, 32, "%ld", month);
                 snprintf(year_buffer, 32, "%ld", year);
                 char *argv[4];
-                argv[0] = "/home/linuxbrew/.linuxbrew/bin/cal";
+                argv[0] = "/usr/bin/cal";
                 argv[1] = month_buffer;
                 argv[2] = year_buffer;
                 argv[3] = NULL;
-                if (execve("/usr/bin/cal", argv, NULL) < 0) {
+                if (execve(argv[0], argv, NULL) < 0) {
                     perror("execve");
                     exit(-1);
                 }
