@@ -56,7 +56,7 @@ def counter_load()
   rescue Errno::ENOENT
     # nop
   end
-    return counter
+  return counter
 end
 
 main()
