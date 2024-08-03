@@ -31,30 +31,6 @@ void print_header() {
     printf("\n");
 }
 
-int mysystem(const char *command) {
-    int child, status;
-
-    if ((child = fork()) < 0) {
-        perror("fork");
-        return -1;
-    }
-
-    if (child == 0) {
-        // child
-        if (execl("/bin/sh", "sh", "-c", command, (char *)NULL) < 0) {
-            perror("execl");
-            return -1;
-        }
-    } else {
-        // parent
-        if (wait(&status) < 0) {
-            perror("wait");
-            return -1;
-        }
-    }
-    return 0;
-}
-
 void print_content() {
     char *query_string;
     int qc;
