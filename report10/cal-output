@@ -1,0 +1,88 @@
+azalea11% echo $LANG
+ja_JP.UTF-8
+azalea11% export REQUEST_METHOD=GET
+azalea11% export QUERY_STRING='year=2024&month=8'
+azalea11% ./cgi-cal.rb # 正しいパラメタの例 1
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY><PRE>
+      8月 2024
+日 月 火 水 木 金 土
+             1  2  3
+ 4  5  6  7  8  9 10
+11 12 13 14 15 16 17
+18 19 20 21 22 23 24
+25 26 27 28 29 30 31
+
+</PRE></BODY></HTML>
+azalea11% export QUERY_STRING='year=2023&month=8'
+azalea11% ./cgi-cal.rb # 正しいパラメタの例 2
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY><PRE>
+      8月 2023
+日 月 火 水 木 金 土
+       1  2  3  4  5
+ 6  7  8  9 10 11 12
+13 14 15 16 17 18 19
+20 21 22 23 24 25 26
+27 28 29 30 31
+
+</PRE></BODY></HTML>
+azalea11% export QUERY_STRING=''
+azalea11% ./cgi-cal.rb # 不適切なパラメタの例 1
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY><PRE>
+Parameter 'year' is required but empty.
+Parameter 'month' is required but empty.
+</PRE></BODY></HTML>
+azalea11% export QUERY_STRING='year=2023'
+azalea11% ./cgi-cal.rb # 不適切なパラメタの例 2
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY><PRE>
+Parameter 'month' is required but empty.
+</PRE></BODY></HTML>
+azalea11% export QUERY_STRING='month=8'
+azalea11% ./cgi-cal.rb # 不適切なパラメタの例 3
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY><PRE>
+Parameter 'year' is required but empty.
+</PRE></BODY></HTML>
+azalea11% export QUERY_STRING='year=2023&month=13'
+azalea11% ./cgi-cal.rb # 不適切なパラメタの例 4
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY><PRE>
+Invalid value.
+</PRE></BODY></HTML>
+azalea11% export QUERY_STRING='year=2023&month=aaa'
+azalea11% ./cgi-cal.rb # 不適切なパラメタの例 5
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY><PRE>
+Invalid value.
+</PRE></BODY></HTML>
+azalea11% export QUERY_STRING='year=0&month=8'
+azalea11% ./cgi-cal.rb # 不適切なパラメタの例 6
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY><PRE>
+Invalid value.
+</PRE></BODY></HTML>
+azalea11% export QUERY_STRING='year=aaaaa&month=8'
+azalea11% ./cgi-cal.rb # 不適切なパラメタの例 7
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY><PRE>
+Invalid value.
+</PRE></BODY></HTML>
+azalea11% export QUERY_STRING='year=100000000&month=8'
+azalea11% ./cgi-cal.rb # 不適切なパラメタの例 8
+Content-Type: text/html
+
+<HTML><HEAD></HEAD><BODY><PRE>
+Invalid value.
+</PRE></BODY></HTML>

@@ -3,14 +3,13 @@
 require "cgi"
 
 DATA_FILENAME = "file-counter-value.data"
-$comname = $0
 
 def main()
   @cgi = CGI.new()
   print_header()
   counter =  handle_counter()
   print_content(counter)
-  exit( 0 )
+  exit(0)
 end
 
 def print_header()

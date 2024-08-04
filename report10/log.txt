@@ -1,0 +1,7 @@
+2400:4051:c4a0:9600:aefe:3b:f3e4:8d7e - - [04/Aug/2024:23:41:23 +0900] "GET /~s2
+311951/syspro-cgi-examples/cal.html HTTP/1.1" 200 682 "-" "Mozilla/5.0 (X11; Lin
+ux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0"
+2400:4051:c4a0:9600:aefe:3b:f3e4:8d7e - - [04/Aug/2024:23:41:32 +0900] "GET /~s2
+311951/syspro-cgi-examples/cgi-cal.rb?month=1&year=2000 HTTP/1.1" 200 220 "http:
+//www.coins.tsukuba.ac.jp/~s2311951/syspro-cgi-examples/cal.html" "Mozilla/5.0 (
+X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0"
